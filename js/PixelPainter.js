@@ -33,7 +33,7 @@ console.log(currentColor)
 function selectColor() {
     for (var i=0; i<colorSquare.length; i++) {
         if (colorSquare[i].style.border === "2px solid yellow") {
-            colorSquare[i].style.border = "1px solid green";
+            colorSquare[i].style.border = "none";
         }
     }
     currentColor = this.style.backgroundColor;
@@ -59,7 +59,6 @@ for (var i=0; i<canvasRow.length; i++) {
         makeCanvasSquare.className = "canvasSquare";
         makeCanvasSquare.addEventListener("mousedown", paint);
         makeCanvasSquare.addEventListener("mouseup", stopPaint);
-        makeCanvasSquare.addEventListener("mouseover", dragPaint);
         canvasRow[i].appendChild(makeCanvasSquare);
     }
 }
@@ -73,8 +72,4 @@ function stopPaint() {
     if (paint() === true) {
         return;
     }
-}
-
-function dragPaint() {
-    
 }
