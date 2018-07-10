@@ -34,8 +34,6 @@ for (var i=0; i<colorArr.length; i++) {
 }
 
 var currentColor = colorSquare[0].style.backgroundColor;
-console.log(currentColor)
-
 var eraseStatus = false;
 
 function selectColor() {
@@ -89,7 +87,10 @@ for (var i=0; i<canvasRow.length; i++) {
     for (var j=0; j<20; j++) {
         var makeCanvasSquare = document.createElement("div");
         makeCanvasSquare.className = "canvasSquare";
-        makeCanvasSquare.addEventListener("mousedown", paint);
+        makeCanvasSquare.addEventListener("click", paint);
+        makeCanvasSquare.addEventListener("mousedown", morePaint);
+        makeCanvasSquare.addEventListener("mouseover", dragPaint);
+        makeCanvasSquare.addEventListener("mouseup", stopPaint);
         canvasRow[i].appendChild(makeCanvasSquare);
     }
 }
@@ -98,21 +99,55 @@ var canvasSquare = document.getElementsByClassName("canvasSquare");
 
 var historyArr = [];
 var historyIndex = 0;
+var changes = [];
+for (var i=0; i<canvasSquare.length; i++) {
+    changes.push(canvasSquare[i].style.backgroundColor);
+}
+historyArr.push(changes);
+changes = [];
+
+var isClicked;
+
 function paint() {
-    if (historyArr.length > historyIndex) {
-        historyArr.splice(historyIndex, (historyIndex - historyArr.length));
-    }
-    historyArr.push([this]);
-    historyIndex++;
-    console.log(historyArr);
-    console.log(historyIndex);
     if (eraseStatus === false) {
         this.style.backgroundColor = currentColor;
     } else {
         this.style.backgroundColor = null;
     } 
-    historyArr[historyArr.length].push(currentColor);;
+    isClicked = false;
+
+    if (historyArr.length-1 > historyIndex) {
+        historyArr.splice(historyIndex, (historyArr.length-historyIndex-1));
+    }
+
+    for (var i=0; i<canvasSquare.length; i++) {
+        changes.push(canvasSquare[i].style.backgroundColor);
+    }
+    historyArr.push(changes);
+    historyIndex++;
+    changes = [];
+    console.log(historyArr);
+    console.log(historyIndex);
 }
+
+function morePaint() {
+    isClicked = true;
+}
+
+function dragPaint() {
+    if (isClicked) {
+        if (eraseStatus === false) {
+            this.style.backgroundColor = currentColor;
+        } else {
+            this.style.backgroundColor = null;
+        } 
+    }
+}
+
+function stopPaint() {
+    isClicked = false;
+}
+
 
 var areYouSure = document.createElement("div");
 areYouSure.id = "areYouSure";
@@ -133,8 +168,12 @@ function clearCanvas() {
     if (areYouSure.style.display === "block") {
         areYouSure.style.display = "none";
     }
-    historyArr = [];
     historyIndex = 0;
+    for (var i=0; i<canvasSquare.length; i++) {
+        changes.push(canvasSquare[i].style.backgroundColor);
+    }
+    historyArr.push(changes);
+    changes = [];
 }
 
 var noButton = document.createElement("div");
@@ -207,7 +246,9 @@ function undo() {
         console.log("Nothing to undo")
     } else {
         historyIndex--;
-        console.log("Add function to call historyArr item"); //** 
+        for (var i=0; i<canvasSquare.length; i++) {
+            canvasSquare[i].style.backgroundColor = historyArr[historyIndex][i];
+        }
     }
 
 }
@@ -217,9 +258,9 @@ function redo() {
         console.log("Nothing to redo")
     } else {
         historyIndex++;
-        console.log("Add function to call historyArr item");
+        for (var i=0; i<canvasSquare.length; i++) {
+            canvasSquare[i].style.backgroundColor = historyArr[historyIndex+1][i];
+        }
     }
 
 }
-
-// for history array [index, color that was there, currentColor]
