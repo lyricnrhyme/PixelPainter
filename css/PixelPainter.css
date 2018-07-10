@@ -30,7 +30,7 @@ body {
 
 #pixelPainter {
     width: 1200px;
-    height: 1000px;
+    height: 500px;
     display: flex;
     position: absolute;
     z-index: 1;
