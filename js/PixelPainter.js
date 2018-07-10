@@ -105,6 +105,7 @@ for (var i=0; i<canvasSquare.length; i++) {
 }
 historyArr.push(changes);
 changes = [];
+console.log(historyArr);
 
 var isClicked;
 
@@ -115,19 +116,6 @@ function paint() {
         this.style.backgroundColor = null;
     } 
     isClicked = false;
-
-    if (historyArr.length-1 > historyIndex) {
-        historyArr.splice(historyIndex, (historyArr.length-historyIndex-1));
-    }
-
-    for (var i=0; i<canvasSquare.length; i++) {
-        changes.push(canvasSquare[i].style.backgroundColor);
-    }
-    historyArr.push(changes);
-    historyIndex++;
-    changes = [];
-    console.log(historyArr);
-    console.log(historyIndex);
 }
 
 function morePaint() {
@@ -146,6 +134,18 @@ function dragPaint() {
 
 function stopPaint() {
     isClicked = false;
+    // if (historyArr.length > historyIndex) {
+    //     historyArr.splice(historyIndex+1, (historyArr.length-historyIndex));
+    // }
+    historyIndex++;
+    for (var i=0; i<canvasSquare.length; i++) {
+        changes.push(canvasSquare[i].style.backgroundColor);
+    }
+    console.log(changes);
+    historyArr.push(changes);
+    changes = [];
+    console.log(historyArr);
+    console.log(historyIndex);
 }
 
 
@@ -169,6 +169,7 @@ function clearCanvas() {
         areYouSure.style.display = "none";
     }
     historyIndex = 0;
+    changes = [];
     for (var i=0; i<canvasSquare.length; i++) {
         changes.push(canvasSquare[i].style.backgroundColor);
     }
@@ -242,25 +243,29 @@ redoButton.addEventListener("click", redo);
 actionDiv.appendChild(redoButton);
 
 function undo() {
-    if (historyIndex === 0) {
+    if (historyIndex < 1) {
         console.log("Nothing to undo")
+        console.log(historyIndex);
     } else {
-        historyIndex--;
         for (var i=0; i<canvasSquare.length; i++) {
             canvasSquare[i].style.backgroundColor = historyArr[historyIndex][i];
         }
+        historyIndex--;
+        console.log(historyArr);
+        console.log(historyIndex);
     }
-
 }
 
 function redo() {
     if (historyIndex === historyArr.length) {
-        console.log("Nothing to redo")
-    } else {
+        console.log("Nothing to redo");
+        console.log(historyIndex);
+    }
         historyIndex++;
         for (var i=0; i<canvasSquare.length; i++) {
-            canvasSquare[i].style.backgroundColor = historyArr[historyIndex+1][i];
+            canvasSquare[i].style.backgroundColor = historyArr[historyIndex][i];
         }
-    }
+        console.log(historyArr);
+        console.log(historyIndex);
 
 }
