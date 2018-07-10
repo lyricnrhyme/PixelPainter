@@ -47,15 +47,15 @@ function selectColor() {
     eraseStatus = false;
 }
 
-var buttonsDiv = document.createElement("div");
-buttonsDiv.id = "buttonsDiv";
-options.appendChild(buttonsDiv);
+var eraseColorDiv = document.createElement("div");
+eraseColorDiv.id = "eraseColorDiv";
+options.appendChild(eraseColorDiv);
 
 var eraseButton = document.createElement("div");
 eraseButton.id = "eraseButton";
 eraseButton.innerHTML = "ERASE";
 eraseButton.addEventListener("click", eraseTool);
-buttonsDiv.appendChild(eraseButton);
+eraseColorDiv.appendChild(eraseButton);
 
 function eraseTool() {
     eraseStatus = true;
@@ -65,7 +65,7 @@ var clearButton = document.createElement("div");
 clearButton.id = "clearButton";
 clearButton.innerHTML = "CLEAR";
 clearButton.addEventListener("click", areYouSure);
-buttonsDiv.appendChild(clearButton);
+eraseColorDiv.appendChild(clearButton);
 
 function areYouSure() {
     areYouSure.style.display = "block";
@@ -140,8 +140,8 @@ function stopPaint() {
     console.log(historyArr);
     console.log(historyIndex);
     isClicked = false;
+    captionDiv.innerHTML = "";
 }
-
 
 var areYouSure = document.createElement("div");
 areYouSure.id = "areYouSure";
@@ -169,6 +169,7 @@ function clearCanvas() {
     }
     historyArr.push(changes);
     changes = [];
+    captionDiv.innerHTML = "CANVAS CLEARED";
 }
 
 var noButton = document.createElement("div");
@@ -205,6 +206,7 @@ function savePic() {
     }
     console.log(saveArr);
     console.log("Pic Saved!");
+    captionDiv.innerHTML = "PIC SAVED!";
 }
 
 function loadPic() {
@@ -213,6 +215,7 @@ function loadPic() {
             canvasSquare[i].style.backgroundColor = saveArr[i];
         }
         console.log("Pic Loaded!");
+        captionDiv.innerHTML = "PIC LOADED!";
     } else {
         console.log("Nothing to load");
     }
@@ -241,6 +244,7 @@ function undo() {
     if (historyIndex < 0) {
         historyIndex++;
         console.log("Nothing to undo");
+        captionDiv.innerHTML = "NOTHING TO UNDO";
         console.log(historyIndex);
     } else {
         for (var i=0; i<canvasSquare.length; i++) {
@@ -256,6 +260,7 @@ function redo() {
     if (historyIndex === historyArr.length) {
         historyIndex--;
         console.log("Nothing to redo");
+        captionDiv.innerHTML = "NOTHING TO REDO";
         console.log(historyIndex);
     } else {
         for (var i=0; i<canvasSquare.length; i++) {
@@ -265,3 +270,8 @@ function redo() {
         console.log(historyIndex);
     }   
 }
+
+var captionDiv = document.createElement("div");
+captionDiv.id = "captionDiv";
+captionDiv.innerHTML = "";
+document.body.appendChild(captionDiv)
