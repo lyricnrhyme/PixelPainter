@@ -45,7 +45,6 @@ function selectColor() {
         }
     }
     currentColor = this.style.backgroundColor;
-    console.log(currentColor);
     this.style.border = "2px solid yellow";
     eraseStatus = false;
 }
@@ -97,22 +96,22 @@ for (var i=0; i<canvasRow.length; i++) {
 
 var canvasSquare = document.getElementsByClassName("canvasSquare");
 
-function paintMore() {
-    if (eraseStatus === false) {
-        this.style.backgroundColor = currentColor;
-        console.log(this);
-    } else {
-        this.style.backgroundColor = null;
-    } 
-}
-
+var historyArr = [];
+var historyIndex = 0;
 function paint() {
+    if (historyArr.length > historyIndex) {
+        historyArr.splice(historyIndex, (historyIndex - historyArr.length));
+    }
+    historyArr.push([this]);
+    historyIndex++;
+    console.log(historyArr);
+    console.log(historyIndex);
     if (eraseStatus === false) {
         this.style.backgroundColor = currentColor;
-        console.log(this);
     } else {
         this.style.backgroundColor = null;
     } 
+    historyArr[historyArr.length].push(currentColor);;
 }
 
 var areYouSure = document.createElement("div");
@@ -134,6 +133,8 @@ function clearCanvas() {
     if (areYouSure.style.display === "block") {
         areYouSure.style.display = "none";
     }
+    historyArr = [];
+    historyIndex = 0;
 }
 
 var noButton = document.createElement("div");
@@ -162,7 +163,7 @@ loadButton.innerHTML = "LOAD";
 loadButton.addEventListener("click", loadPic);
 saveLoadDiv.appendChild(loadButton);
 
-var saveArr = [];
+var saveArr;
 function savePic() {
     saveArr = [];
     for (var i=0; i<canvasSquare.length; i++) {
@@ -177,7 +178,48 @@ function loadPic() {
         for (var i=0; i<canvasSquare.length; i++) {
             canvasSquare[i].style.backgroundColor = saveArr[i];
         }
+        console.log("Pic Loaded!");
     } else {
         console.log("Nothing to load");
     }
+    historyArr = [];
+    historyIndex = 0;
 }
+
+var actionDiv = document.createElement("div");
+actionDiv.id = "actionDiv";
+options.appendChild(actionDiv);
+
+var undoButton = document.createElement("div");
+undoButton.id = "undoButton";
+undoButton.innerHTML = "UNDO";
+undoButton.addEventListener("click", undo);
+actionDiv.appendChild(undoButton);
+
+var redoButton = document.createElement("div");
+redoButton.id = "redoButton";
+redoButton.innerHTML = "REDO";
+redoButton.addEventListener("click", redo);
+actionDiv.appendChild(redoButton);
+
+function undo() {
+    if (historyIndex === 0) {
+        console.log("Nothing to undo")
+    } else {
+        historyIndex--;
+        console.log("Add function to call historyArr item"); //** 
+    }
+
+}
+
+function redo() {
+    if (historyIndex === historyArr.length) {
+        console.log("Nothing to redo")
+    } else {
+        historyIndex++;
+        console.log("Add function to call historyArr item");
+    }
+
+}
+
+// for history array [index, color that was there, currentColor]

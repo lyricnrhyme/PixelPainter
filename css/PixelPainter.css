@@ -1,5 +1,6 @@
 body {
     font-family: "VT323", monospace;
+    background-color: blue;
 }
 
 #areYouSure {
@@ -36,8 +37,11 @@ body {
 }
 
 #options {
-    width: 250px;
-    height: 700px;
+    width: 235px;
+    height: 492px;
+    background-color: rgba(150,150,150, 0.8);
+    padding-left: 30px;
+    padding-top: 10px;
 }
 
 #colorDiv {
@@ -93,6 +97,8 @@ body {
 #canvasDiv {
     width: 500px;
     height: 500px;
+    background-color: white;
+    margin-left: 10px;
 }
 
 .canvasRow {
@@ -131,6 +137,37 @@ body {
     width: 100px;
     height: 50px;
     background-color: blue;
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 30px;
+    line-height: 150%;
+    margin-left: 10px;
+}
+
+#actionDiv {
+    width: 210px;
+    height: 50px;
+    display: flex;
+    /* background-color: green; */
+    margin-top: 10px;
+}
+
+#undoButton {
+    width: 100px;
+    height: 50px;
+    background-color: green;
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 30px;
+    line-height: 150%;
+}
+
+#redoButton {
+    width: 100px;
+    height: 50px;
+    background-color: green;
     color: white;
     border-radius: 10px;
     text-align: center;
