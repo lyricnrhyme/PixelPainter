@@ -37,15 +37,33 @@ var currentColor = colorSquare[0].style.backgroundColor;
 var eraseStatus = false;
 
 function selectColor() {
+    if (this.style.backgroundImage) {
+        currentColor = null;
+        currentImage = this.style.backgroundImage;
+        console.log(currentImage);
+        console.log(this.style.backgroundColor);
+    } else {
+        currentImage = null;
+        currentColor = this.style.backgroundColor;
+        console.log(currentImage);
+        console.log(this.style.backgroundColor);
+    }  
     for (var i=0; i<colorSquare.length; i++) {
         if (colorSquare[i].style.border === "2px solid yellow") {
             colorSquare[i].style.border = "none";
         }
     }
-    currentColor = this.style.backgroundColor;
     this.style.border = "2px solid yellow";
     eraseStatus = false;
 }
+
+var imgArr = ["url(assets/avocadoGif.gif)", "url(assets/catGif.gif)", "url(assets/coverGif.gif)", "url(assets/dogGif.gif)", "url(assets/peeleGif.gif)", "url(assets/penguinGif.gif)", "url(assets/shiaGif.gif)", "url(assets/spaceGif.gif)"];
+
+for (var i=0; i<imgArr.length; i++) {
+    colorSquare[72+i].style.backgroundImage = imgArr[i];
+    colorSquare[72+i].style.backgroundSize = "30px";
+}
+var currentImage;
 
 var eraseColorDiv = document.createElement("div");
 eraseColorDiv.id = "eraseColorDiv";
@@ -99,6 +117,7 @@ var canvasSquare = document.getElementsByClassName("canvasSquare");
 var historyArr = [];
 var historyIndex = 0;
 var changes = [];
+var pixelDetail = [];
 for (var i=0; i<canvasSquare.length; i++) {
     changes.push(canvasSquare[i].style.backgroundColor);
 }
@@ -112,10 +131,19 @@ function paint() {
     if (historyArr.length-1 > historyIndex) {
         historyArr.splice(historyIndex+1, historyArr.length-historyIndex-1);
     }
+
     if (eraseStatus === false) {
-        this.style.backgroundColor = currentColor;
+        if (currentColor) {
+            this.style.backgroundColor = currentColor;
+            this.style.backgroundImage = null;
+        } else if (currentImage) {
+            this.style.backgroundImage = currentImage;
+            this.style.backgroundSize = "30px";
+            this.style.backgroundColor = null;
+        }
     } else {
         this.style.backgroundColor = null;
+        this.style.backgroundImage = null;
     } 
     isClicked = true;
 }
@@ -123,16 +151,36 @@ function paint() {
 function dragPaint() {
     if (isClicked) {
         if (eraseStatus === false) {
-            this.style.backgroundColor = currentColor;
+            if (currentColor) {
+                this.style.backgroundColor = currentColor;
+                this.style.backgroundImage = null;
+            } else if (currentImage) {
+                this.style.backgroundImage = currentImage;
+                this.style.backgroundSize = "30px";
+                this.style.backgroundColor = null;
+            }
         } else {
             this.style.backgroundColor = null;
+            this.style.backgroundImage = null;
         } 
     }
 }
 
 function stopPaint() {
     for (var i=0; i<canvasSquare.length; i++) {
-        changes.push(canvasSquare[i].style.backgroundColor);
+        if (canvasSquare[i].style.backgroundColor) {
+            pixelDetail[0] = true;
+            pixelDetail[1] = canvasSquare[i].style.backgroundColor;
+            changes.push(pixelDetail);
+            pixelDetail = [];
+        } else if (canvasSquare[i].style.backgroundImage) {
+            pixelDetail[0] = false;
+            pixelDetail[1] = canvasSquare[i].style.backgroundImage;
+            changes.push(pixelDetail);
+            pixelDetail = [];
+        } else {
+            changes.push([]);
+        }
     }
     historyIndex++;
     historyArr.push(changes);
@@ -158,10 +206,12 @@ areYouSure.appendChild(yesButton);
 function clearCanvas() {
     for (var i=0; i<canvasSquare.length; i++) {
         canvasSquare[i].style.backgroundColor = null;
+        canvasSquare[i].style.backgroundImage = null;
     }
     if (areYouSure.style.display === "block") {
         areYouSure.style.display = "none";
     }
+    historyArr = [];
     historyIndex = 0;
     changes = [];
     for (var i=0; i<canvasSquare.length; i++) {
@@ -202,7 +252,19 @@ var saveArr;
 function savePic() {
     saveArr = [];
     for (var i=0; i<canvasSquare.length; i++) {
-        saveArr.push(canvasSquare[i].style.backgroundColor);
+        if (canvasSquare[i].style.backgroundColor) {
+            pixelDetail[0] = true;
+            pixelDetail[1] = canvasSquare[i].style.backgroundColor;
+            saveArr.push(pixelDetail);
+            pixelDetail = [];
+        } else if (canvasSquare[i].style.backgroundImage) {
+            pixelDetail[0] = false;
+            pixelDetail[1] = canvasSquare[i].style.backgroundImage;
+            saveArr.push(pixelDetail);
+            pixelDetail = [];
+        } else {
+            saveArr.push([]);
+        }
     }
     console.log(saveArr);
     console.log("Pic Saved!");
@@ -212,15 +274,33 @@ function savePic() {
 function loadPic() {
     if ((saveArr)) {
         for (var i=0; i<canvasSquare.length; i++) {
-            canvasSquare[i].style.backgroundColor = saveArr[i];
+            if (saveArr[i][0] === true) {
+                canvasSquare[i].style.backgroundColor = saveArr[i][1];
+                canvasSquare[i].style.backgroundImage = null;
+            } else if (saveArr[i][0] === false) {
+                canvasSquare[i].style.backgroundImage = saveArr[i][1];
+                canvasSquare[i].style.backgroundSize = "30px";
+                canvasSquare[i].style.backgroundColor = null;
+            } else {
+                canvasSquare[i].style.backgroundColor = null;
+                canvasSquare[i].style.backgroundImage = null;
+            }
         }
         console.log("Pic Loaded!");
         captionDiv.innerHTML = "PIC LOADED!";
     } else {
         console.log("Nothing to load");
+        captionDiv.innerHTML = "NOTHING TO LOAD";
     }
+    
     historyArr = [];
     historyIndex = 0;
+    changes = [];
+    for (var i=0; i<canvasSquare.length; i++) {
+        changes.push(canvasSquare[i].style.backgroundColor);
+    }
+    historyArr.push(changes);
+    changes = [];
 }
 
 var actionDiv = document.createElement("div");
@@ -248,7 +328,17 @@ function undo() {
         console.log(historyIndex);
     } else {
         for (var i=0; i<canvasSquare.length; i++) {
-            canvasSquare[i].style.backgroundColor = historyArr[historyIndex][i];
+            if (historyArr[historyIndex][i][0] === true) {
+                canvasSquare[i].style.backgroundColor = historyArr[historyIndex][i][1];
+                canvasSquare[i].style.backgroundImage = null;
+            } else if (historyArr[historyIndex][i][0] === false) {
+                canvasSquare[i].style.backgroundImage = historyArr[historyIndex][i][1];
+                canvasSquare[i].style.backgroundSize = "30px";
+                canvasSquare[i].style.backgroundColor = null;
+            } else {
+                canvasSquare[i].style.backgroundColor = null;
+                canvasSquare[i].style.backgroundImage = null;
+            }
         }
         console.log(historyArr);
         console.log(historyIndex);
@@ -264,7 +354,18 @@ function redo() {
         console.log(historyIndex);
     } else {
         for (var i=0; i<canvasSquare.length; i++) {
-            canvasSquare[i].style.backgroundColor = historyArr[historyIndex][i];
+            if (historyArr[historyIndex][i][0] === true) {
+                canvasSquare[i].style.backgroundColor = historyArr[historyIndex][i][1];
+                canvasSquare[i].style.backgroundImage = null;
+            } else if (historyArr[historyIndex][i][0] === false) {
+                canvasSquare[i].style.backgroundImage = historyArr[historyIndex][i][1];
+                canvasSquare[i].style.backgroundSize = "30px";
+                canvasSquare[i].style.backgroundColor = null;
+            } else {
+                canvasSquare[i].style.backgroundColor = null;
+                canvasSquare[i].style.backgroundImage = null;
+            }
+            // canvasSquare[i].style.backgroundColor = historyArr[historyIndex][i];
         }
         console.log(historyArr);
         console.log(historyIndex);
