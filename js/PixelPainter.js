@@ -1,3 +1,10 @@
+var audio = document.createElement("audio");
+audio.id = "audio";
+audio.src = "assets/digitalDreams.mp3";
+audio.preload = "auto";
+audio.loop = true;
+audio.play();
+
 var pixelPainter = document.getElementById("pixelPainter");
 
 var options = document.createElement("div");
@@ -340,6 +347,7 @@ function undo() {
                 canvasSquare[i].style.backgroundImage = null;
             }
         }
+        captionDiv.innerHTML = "";
         console.log(historyArr);
         console.log(historyIndex);
     }
@@ -365,8 +373,8 @@ function redo() {
                 canvasSquare[i].style.backgroundColor = null;
                 canvasSquare[i].style.backgroundImage = null;
             }
-            // canvasSquare[i].style.backgroundColor = historyArr[historyIndex][i];
         }
+        captionDiv.innerHTML = "";
         console.log(historyArr);
         console.log(historyIndex);
     }   
@@ -376,3 +384,19 @@ var captionDiv = document.createElement("div");
 captionDiv.id = "captionDiv";
 captionDiv.innerHTML = "";
 document.body.appendChild(captionDiv)
+
+var videoDiv = document.createElement("div");
+videoDiv.id = "videoDiv";
+videoDiv.style.display = "none";
+document.body.appendChild(videoDiv);
+
+var videoArr = ["assets/avocadoVid.mp4", "assets/catVid.mp4", "assets/coverVid.mp4", "assets/dogVid.mp4", "assets/peeleVid.mp4", "assets/penguinVid.mp4", "assets/shiaVid.mp4", "assets/spaceVid.mp4"];
+
+for (var i=0; i<videoArr.length; i++) {
+    var makeVideo = document.createElement("video");
+    makeVideo.className = "videos";
+    makeVideo.src = videoArr[i];
+    makeVideo.controls = true;
+    makeVideo.style.display = "none";
+    videoDiv.appendChild(makeVideo);
+}
