@@ -1,3 +1,7 @@
+/////////////////////
+//Audio Element
+/////////////////////
+
 var audio = document.createElement("audio");
 audio.id = "audio";
 audio.src = "assets/digitalDreams.mp3";
@@ -5,11 +9,19 @@ audio.preload = "auto";
 audio.loop = true;
 audio.play();
 
+/////////////////////
+//Creating Pixel Painter Area
+/////////////////////
+
 var pixelPainter = document.getElementById("pixelPainter");
 
 var options = document.createElement("div");
 options.id = "options";
 pixelPainter.appendChild(options);
+
+/////////////////////
+//Creating Color Options Area
+/////////////////////
 
 var colorDiv = document.createElement("div");
 colorDiv.id = "colorDiv";
@@ -39,6 +51,10 @@ var colorArr = ["indianred", "lightcoral", "salmon", "crimson", "red", "firebric
 for (var i=0; i<colorArr.length; i++) {
     colorSquare[i].style.backgroundColor = colorArr[i];
 }
+
+/////////////////////
+//Select Color Function
+/////////////////////
 
 var currentColor = colorSquare[0].style.backgroundColor;
 var eraseStatus = false;
@@ -72,6 +88,10 @@ for (var i=0; i<imgArr.length; i++) {
 }
 var currentImage;
 
+/////////////////////
+//Creating Erase and Clear Divs
+/////////////////////
+
 var eraseColorDiv = document.createElement("div");
 eraseColorDiv.id = "eraseColorDiv";
 options.appendChild(eraseColorDiv);
@@ -95,6 +115,10 @@ eraseColorDiv.appendChild(clearButton);
 function areYouSure() {
     areYouSure.style.display = "block";
 }
+
+/////////////////////
+//Creating Pixel Canvas
+/////////////////////
 
 var canvasDiv = document.createElement("div");
 canvasDiv.id = "canvasDiv";
@@ -121,6 +145,10 @@ for (var i=0; i<canvasRow.length; i++) {
 
 var canvasSquare = document.getElementsByClassName("canvasSquare");
 
+/////////////////////
+//Creating History Elements
+/////////////////////
+
 var historyArr = [];
 var historyIndex = 0;
 var changes = [];
@@ -131,6 +159,10 @@ for (var i=0; i<canvasSquare.length; i++) {
 historyArr.push(changes);
 changes = [];
 console.log(historyArr);
+
+/////////////////////
+//Painting Functions
+/////////////////////
 
 var isClicked;
 
@@ -196,7 +228,16 @@ function stopPaint() {
     console.log(historyIndex);
     isClicked = false;
     captionDiv.innerHTML = "";
+    if (this.style.backgroundImage === "url(assets/avocadoGif.gif)") {
+        console.log(true);
+    } else {
+        console.log(false);
+    }
 }
+
+/////////////////////
+//Creating Clear Canvas Options
+/////////////////////
 
 var areYouSure = document.createElement("div");
 areYouSure.id = "areYouSure";
@@ -238,6 +279,10 @@ areYouSure.appendChild(noButton);
 function closeMenu() {
     areYouSure.style.display = "none";
 }
+
+/////////////////////
+//Creating Save/Load Options
+/////////////////////
 
 var saveLoadDiv = document.createElement("div");
 saveLoadDiv.id = "saveLoadDiv";
@@ -310,6 +355,10 @@ function loadPic() {
     changes = [];
 }
 
+/////////////////////
+//Creating Undo/Redo Options
+/////////////////////
+
 var actionDiv = document.createElement("div");
 actionDiv.id = "actionDiv";
 options.appendChild(actionDiv);
@@ -380,10 +429,18 @@ function redo() {
     }   
 }
 
+/////////////////////
+//Creating Captions Div to Display Comments
+/////////////////////
+
 var captionDiv = document.createElement("div");
 captionDiv.id = "captionDiv";
 captionDiv.innerHTML = "";
 document.body.appendChild(captionDiv)
+
+/////////////////////
+//Creating Video Div that will pop up
+/////////////////////
 
 var videoDiv = document.createElement("div");
 videoDiv.id = "videoDiv";

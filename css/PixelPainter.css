@@ -3,6 +3,14 @@ body {
     background-color: blue;
 }
 
+h1 {
+    text-align: center;
+    color: white;
+    font-size: 48px;
+    margin: auto;
+    padding-bottom: 10px;
+}
+
 #areYouSure {
     width: 300px;
     height: 200px;
