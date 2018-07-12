@@ -113,6 +113,7 @@ clearButton.addEventListener("click", areYouSure);
 eraseColorDiv.appendChild(clearButton);
 
 function areYouSure() {
+    disable();
     areYouSure.style.display = "block";
 }
 
@@ -228,11 +229,7 @@ function stopPaint() {
     console.log(historyIndex);
     isClicked = false;
     captionDiv.innerHTML = "";
-    if (this.style.backgroundImage === "url(assets/avocadoGif.gif)") {
-        console.log(true);
-    } else {
-        console.log(false);
-    }
+    playVid();
 }
 
 /////////////////////
@@ -252,6 +249,7 @@ yesButton.addEventListener("click", clearCanvas);
 areYouSure.appendChild(yesButton);
 
 function clearCanvas() {
+    enable();
     for (var i=0; i<canvasSquare.length; i++) {
         canvasSquare[i].style.backgroundColor = null;
         canvasSquare[i].style.backgroundImage = null;
@@ -277,6 +275,7 @@ noButton.addEventListener("click", closeMenu);
 areYouSure.appendChild(noButton);
 
 function closeMenu() {
+    enable();
     areYouSure.style.display = "none";
 }
 
@@ -447,13 +446,170 @@ videoDiv.id = "videoDiv";
 videoDiv.style.display = "none";
 document.body.appendChild(videoDiv);
 
+var closeVideoOptions = document.createElement("div");
+closeVideoOptions.id = "closeVideoOptions";
+videoDiv.appendChild(closeVideoOptions);
+
+var closeVideoDiv = document.createElement("div");
+closeVideoDiv.id = "closeVideoDiv";
+closeVideoDiv.innerHTML = "X";
+closeVideoDiv.addEventListener("click", closeVideo);
+closeVideoOptions.appendChild(closeVideoDiv);
+
+function closeVideo() {
+    for (var i=0; i<videos.length; i++) {
+        if (videos[i].style.display === "block") {
+            videos[i].style.display = "none";
+            videos[i].pause();
+            videos[i].currentTime = 0;
+        }
+    }
+    videoDiv.style.display = "none";
+    audio.play();
+    enable();
+}
+
 var videoArr = ["assets/avocadoVid.mp4", "assets/catVid.mp4", "assets/coverVid.mp4", "assets/dogVid.mp4", "assets/peeleVid.mp4", "assets/penguinVid.mp4", "assets/shiaVid.mp4", "assets/spaceVid.mp4"];
 
 for (var i=0; i<videoArr.length; i++) {
     var makeVideo = document.createElement("video");
     makeVideo.className = "videos";
     makeVideo.src = videoArr[i];
-    makeVideo.controls = true;
     makeVideo.style.display = "none";
     videoDiv.appendChild(makeVideo);
+    audio.play();
+}
+
+var videos = document.getElementsByClassName("videos");
+
+/////////////////////
+//Making Videos Visible Function
+/////////////////////
+
+function playVid() {
+    //AVOCADO
+    if (canvasSquare[0].style.backgroundImage === 'url("assets/avocadoGif.gif")' && canvasSquare[19].style.backgroundImage === 'url("assets/avocadoGif.gif")' && canvasSquare[380].style.backgroundImage === 'url("assets/avocadoGif.gif")' && canvasSquare[399].style.backgroundImage === 'url("assets/avocadoGif.gif")') {
+        
+        videoDiv.style.display = "block";
+        videos[0].style.display = "block";
+        videos[0].play();
+        audio.pause();
+        disable();
+        // console.log("Avocado");
+        // return "Avocado";
+
+    //CAT
+    } else if (canvasSquare[0].style.backgroundImage === 'url("assets/catGif.gif")' && canvasSquare[19].style.backgroundImage === 'url("assets/catGif.gif")' && canvasSquare[380].style.backgroundImage === 'url("assets/catGif.gif")' && canvasSquare[399].style.backgroundImage === 'url("assets/catGif.gif")') {
+
+        videoDiv.style.display = "block";
+        videos[1].style.display = "block";
+        videos[1].play();
+        audio.pause();
+        disable();
+        // console.log("Cat");
+        // return "Cat";
+
+    //COVER
+    } else if (canvasSquare[0].style.backgroundImage === 'url("assets/coverGif.gif")' && canvasSquare[19].style.backgroundImage === 'url("assets/coverGif.gif")' && canvasSquare[380].style.backgroundImage === 'url("assets/coverGif.gif")' && canvasSquare[399].style.backgroundImage === 'url("assets/coverGif.gif")') {
+
+        videoDiv.style.display = "block";
+        videos[2].style.display = "block";
+        videos[2].play();
+        audio.pause();
+        disable();
+        // console.log("Cover");
+        // return "Cover";
+
+    //DOG
+    } else if (canvasSquare[0].style.backgroundImage === 'url("assets/dogGif.gif")' && canvasSquare[19].style.backgroundImage === 'url("assets/dogGif.gif")' && canvasSquare[380].style.backgroundImage === 'url("assets/dogGif.gif")' && canvasSquare[399].style.backgroundImage === 'url("assets/dogGif.gif")') {
+
+        videoDiv.style.display = "block";
+        videos[3].style.display = "block";
+        videos[3].play();
+        audio.pause();
+        disable();
+        // console.log("Dog");
+        // return "Dog";
+
+    //PEELE
+    } else if (canvasSquare[0].style.backgroundImage === 'url("assets/peeleGif.gif")' && canvasSquare[19].style.backgroundImage === 'url("assets/peeleGif.gif")' && canvasSquare[380].style.backgroundImage === 'url("assets/peeleGif.gif")' && canvasSquare[399].style.backgroundImage === 'url("assets/peeleGif.gif")') {
+
+        videoDiv.style.display = "block";
+        videos[4].style.display = "block";
+        videos[4].play();
+        audio.pause();
+        disable();
+        // console.log("Peele");
+        // return "Peele";
+
+    //PENGUIN
+    } else if (canvasSquare[0].style.backgroundImage === 'url("assets/penguinGif.gif")' && canvasSquare[19].style.backgroundImage === 'url("assets/penguinGif.gif")' && canvasSquare[380].style.backgroundImage === 'url("assets/penguinGif.gif")' && canvasSquare[399].style.backgroundImage === 'url("assets/penguinGif.gif")') {
+
+        videoDiv.style.display = "block";
+        videos[5].style.display = "block";
+        videos[5].play();
+        audio.pause();
+        disable();
+        // console.log("Penguin");
+        // return "Penguin";
+
+    //SHIA
+    } else if (canvasSquare[0].style.backgroundImage === 'url("assets/shiaGif.gif")' && canvasSquare[19].style.backgroundImage === 'url("assets/shiaGif.gif")' && canvasSquare[380].style.backgroundImage === 'url("assets/shiaGif.gif")' && canvasSquare[399].style.backgroundImage === 'url("assets/shiaGif.gif")') {
+
+        videoDiv.style.display = "block";
+        videos[6].style.display = "block";
+        videos[6].play();
+        audio.pause();
+        disable();
+        // console.log("Shia");
+        // return "Shia";
+
+    //SPACE
+    } else if (canvasSquare[0].style.backgroundImage === 'url("assets/spaceGif.gif")' && canvasSquare[19].style.backgroundImage === 'url("assets/spaceGif.gif")' && canvasSquare[380].style.backgroundImage === 'url("assets/spaceGif.gif")' && canvasSquare[399].style.backgroundImage === 'url("assets/spaceGif.gif")') {
+
+        videoDiv.style.display = "block";
+        videos[7].style.display = "block";
+        videos[7].play();
+        audio.pause();
+        disable();
+        // console.log("Space");
+        // return "Space";
+
+    } else {
+        return;
+    }
+}
+
+function disable() {
+    for (var i=0; i<colorSquare.length; i++) {
+        colorSquare[i].removeEventListener("click", selectColor);
+    }
+    eraseButton.removeEventListener("click", eraseTool);
+    clearButton.removeEventListener("click", areYouSure);
+    for (var i=0; i<canvasSquare.length; i++) {
+        canvasSquare[i].removeEventListener("mousedown", paint);
+        canvasSquare[i].removeEventListener("mouseover", dragPaint);
+        canvasSquare[i].removeEventListener("mouseup", stopPaint);
+    }
+    saveButton.removeEventListener("click", savePic);
+    loadButton.removeEventListener("click", loadPic);
+    undoButton.removeEventListener("click", undo);
+    redoButton.removeEventListener("click", redo);
+}
+
+function enable() {
+    for (var i=0; i<colorSquare.length; i++) {
+        colorSquare[i].addEventListener("click", selectColor);
+    }
+    eraseButton.addEventListener("click", eraseTool);
+    clearButton.addEventListener("click", areYouSure);
+    for (var i=0; i<canvasSquare.length; i++) {
+        canvasSquare[i].addEventListener("mousedown", paint);
+        canvasSquare[i].addEventListener("mouseover", dragPaint);
+        canvasSquare[i].addEventListener("mouseup", stopPaint);
+    }
+    saveButton.addEventListener("click", savePic);
+    loadButton.addEventListener("click", loadPic);
+    undoButton.addEventListener("click", undo);
+    redoButton.addEventListener("click", redo);
 }
