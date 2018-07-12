@@ -7,7 +7,25 @@ audio.id = "audio";
 audio.src = "assets/digitalDreams.mp3";
 audio.preload = "auto";
 audio.loop = true;
-audio.play();
+// audio.play();
+
+window.onload = function() {
+    audio.play();
+}
+
+/////////////////////
+//Animated Title
+/////////////////////
+
+var titleDiv = document.createElement("div");
+titleDiv.id = "titleDiv";
+document.body.appendChild(titleDiv);
+
+// for (var i=0; i<13; i++) {
+//     var makeCharDiv = document.createElement("div");
+//     makeCharDiv.className = "charDiv";
+//     titleDiv.appendChild(makeCharDiv);
+// }
 
 /////////////////////
 //Creating Pixel Painter Area
@@ -579,7 +597,7 @@ function playVid() {
     } else {
         return;
     }
-}
+};
 
 function disable() {
     for (var i=0; i<colorSquare.length; i++) {
