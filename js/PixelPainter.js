@@ -467,6 +467,7 @@ function closeVideo() {
     videoDiv.style.display = "none";
     audio.play();
     enable();
+    document.body.style.backgroundImage = 'url("assets/spaceBackground.png")';
 }
 
 var videoArr = ["assets/avocadoVid.mp4", "assets/catVid.mp4", "assets/coverVid.mp4", "assets/dogVid.mp4", "assets/peeleVid.mp4", "assets/penguinVid.mp4", "assets/shiaVid.mp4", "assets/spaceVid.mp4"];
@@ -477,7 +478,6 @@ for (var i=0; i<videoArr.length; i++) {
     makeVideo.src = videoArr[i];
     makeVideo.style.display = "none";
     videoDiv.appendChild(makeVideo);
-    audio.play();
 }
 
 var videos = document.getElementsByClassName("videos");
@@ -558,6 +558,7 @@ function playVid() {
 
         videoDiv.style.display = "block";
         videos[6].style.display = "block";
+        document.body.style.backgroundImage = 'url("/assets/shiaBackground.jpg")';
         videos[6].play();
         audio.pause();
         disable();
