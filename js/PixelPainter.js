@@ -2,17 +2,18 @@
 //Audio Elements
 /////////////////////
 
+//Background Music
 var audio = document.createElement("audio");
 audio.id = "audio";
 audio.src = "assets/digitalDreams.mp3";
 audio.preload = "auto";
 audio.loop = true;
-// audio.play();
 
 window.onload = function() {
     audio.play();
 }
 
+//Click Sounds
 var click = document.createElement("audio");
 click.id = "click";
 click.src = "assets/clickSound.wav";
@@ -22,10 +23,12 @@ click.preload = "auto";
 //Animated Title
 /////////////////////
 
+//Making Title Div
 var titleDiv = document.createElement("div");
 titleDiv.id = "titleDiv";
 document.body.appendChild(titleDiv);
 
+//Making Title Text
 var titleText = "PIXEL-PAINTER";
 for (var i=0; i<titleText.length; i++) {
     var splitTitle = titleText.split("");
@@ -37,6 +40,7 @@ for (var i=0; i<titleText.length; i++) {
 
 var charDivs = document.getElementsByClassName("charDivs");
 
+//Creating Even Spacing Between Characters
 var titleSpacing = 50;
 for (var i=0; i<charDivs.length; i++) {
     charDivs[i].style.left = titleSpacing;
@@ -47,8 +51,10 @@ for (var i=0; i<charDivs.length; i++) {
 //Creating Pixel Painter Area
 /////////////////////
 
+//Using existing Pixel Painter Div
 var pixelPainter = document.getElementById("pixelPainter");
 
+//Creating Options Div on Left
 var options = document.createElement("div");
 options.id = "options";
 pixelPainter.appendChild(options);
@@ -57,6 +63,7 @@ pixelPainter.appendChild(options);
 //Creating Color Options Area
 /////////////////////
 
+//Creating Color Div in Options
 var colorDiv = document.createElement("div");
 colorDiv.id = "colorDiv";
 options.appendChild(colorDiv);
@@ -77,6 +84,7 @@ for (var i=0; i<colorRow.length; i++) {
     }
 }
 
+//Adding Colors to Color Div
 var colorSquare = document.getElementsByClassName("colorSquare");
 colorSquare[0].style.border = "2px solid yellow";
 
@@ -90,9 +98,12 @@ for (var i=0; i<colorArr.length; i++) {
 //Select Color Function
 /////////////////////
 
+//Storage Variables
 var currentColor = colorSquare[0].style.backgroundColor;
+var currentImage;
 var eraseStatus = false;
 
+//Select Color Function
 function selectColor() {
     if (this.style.backgroundImage) {
         currentColor = null;
@@ -115,38 +126,43 @@ function selectColor() {
     click.play();
 }
 
+//Adding Images
 var imgArr = ["url(assets/avocadoGif.gif)", "url(assets/catGif.gif)", "url(assets/coverGif.gif)", "url(assets/dogGif.gif)", "url(assets/peeleGif.gif)", "url(assets/penguinGif.gif)", "url(assets/shiaGif.gif)", "url(assets/spaceGif.gif)"];
 
 for (var i=0; i<imgArr.length; i++) {
     colorSquare[72+i].style.backgroundImage = imgArr[i];
     colorSquare[72+i].style.backgroundSize = "30px";
 }
-var currentImage;
 
 /////////////////////
 //Creating Erase and Clear Divs
 /////////////////////
 
+//Making Erase/Clear Div
 var eraseColorDiv = document.createElement("div");
 eraseColorDiv.id = "eraseColorDiv";
 options.appendChild(eraseColorDiv);
 
+//Making Erase Button
 var eraseButton = document.createElement("div");
 eraseButton.id = "eraseButton";
 eraseButton.innerHTML = "ERASE";
 eraseButton.addEventListener("click", eraseTool);
 eraseColorDiv.appendChild(eraseButton);
 
+//Erase Function
 function eraseTool() {
     eraseStatus = true;
 }
 
+//Making Clear Button
 var clearButton = document.createElement("div");
 clearButton.id = "clearButton";
 clearButton.innerHTML = "CLEAR";
 clearButton.addEventListener("click", areYouSure);
 eraseColorDiv.appendChild(clearButton);
 
+//Clear Button Leads to Are You Sure Menu
 function areYouSure() {
     click.play();
     disable();
@@ -154,137 +170,31 @@ function areYouSure() {
 }
 
 /////////////////////
-//Creating Pixel Canvas
-/////////////////////
-
-var canvasDiv = document.createElement("div");
-canvasDiv.id = "canvasDiv";
-pixelPainter.appendChild(canvasDiv);
-
-for (var i=0; i<20; i++) {
-    var makeCanvasRow = document.createElement("div");
-    makeCanvasRow.className = "canvasRow";
-    canvasDiv.appendChild(makeCanvasRow);
-}
-
-var canvasRow = document.getElementsByClassName("canvasRow");
-
-for (var i=0; i<canvasRow.length; i++) {
-    for (var j=0; j<20; j++) {
-        var makeCanvasSquare = document.createElement("div");
-        makeCanvasSquare.className = "canvasSquare";
-        makeCanvasSquare.addEventListener("mousedown", paint);
-        makeCanvasSquare.addEventListener("mouseover", dragPaint);
-        makeCanvasSquare.addEventListener("mouseup", stopPaint);
-        canvasRow[i].appendChild(makeCanvasSquare);
-    }
-}
-
-var canvasSquare = document.getElementsByClassName("canvasSquare");
-
-/////////////////////
-//Creating History Elements
-/////////////////////
-
-var historyArr = [];
-var historyIndex = 0;
-var changes = [];
-var pixelDetail = [];
-for (var i=0; i<canvasSquare.length; i++) {
-    changes.push(canvasSquare[i].style.backgroundColor);
-}
-historyArr.push(changes);
-changes = [];
-console.log(historyArr);
-
-/////////////////////
-//Painting Functions
-/////////////////////
-
-var isClicked;
-
-function paint() {
-    if (historyArr.length-1 > historyIndex) {
-        historyArr.splice(historyIndex+1, historyArr.length-historyIndex-1);
-    }
-
-    if (eraseStatus === false) {
-        if (currentColor) {
-            this.style.backgroundColor = currentColor;
-            this.style.backgroundImage = null;
-        } else if (currentImage) {
-            this.style.backgroundImage = currentImage;
-            this.style.backgroundSize = "30px";
-            this.style.backgroundColor = null;
-        }
-    } else {
-        this.style.backgroundColor = null;
-        this.style.backgroundImage = null;
-    } 
-    isClicked = true;
-    click.play();
-}
-
-function dragPaint() {
-    if (isClicked) {
-        if (eraseStatus === false) {
-            if (currentColor) {
-                this.style.backgroundColor = currentColor;
-                this.style.backgroundImage = null;
-            } else if (currentImage) {
-                this.style.backgroundImage = currentImage;
-                this.style.backgroundSize = "30px";
-                this.style.backgroundColor = null;
-            }
-        } else {
-            this.style.backgroundColor = null;
-            this.style.backgroundImage = null;
-        } 
-    }
-}
-
-function stopPaint() {
-    for (var i=0; i<canvasSquare.length; i++) {
-        if (canvasSquare[i].style.backgroundColor) {
-            pixelDetail[0] = true;
-            pixelDetail[1] = canvasSquare[i].style.backgroundColor;
-            changes.push(pixelDetail);
-            pixelDetail = [];
-        } else if (canvasSquare[i].style.backgroundImage) {
-            pixelDetail[0] = false;
-            pixelDetail[1] = canvasSquare[i].style.backgroundImage;
-            changes.push(pixelDetail);
-            pixelDetail = [];
-        } else {
-            changes.push([]);
-        }
-    }
-    historyIndex++;
-    historyArr.push(changes);
-    changes = [];
-    console.log(historyArr);
-    console.log(historyIndex);
-    isClicked = false;
-    captionDiv.innerHTML = "";
-    playVid();
-}
-
-/////////////////////
 //Creating Clear Canvas Options
 /////////////////////
 
+//Making Are You Sure Menu
 var areYouSure = document.createElement("div");
 areYouSure.id = "areYouSure";
 areYouSure.innerHTML = "ARE YOU SURE?"
 document.body.appendChild(areYouSure);
 areYouSure.style.display = "none";
 
+//Making Yes Button
 var yesButton = document.createElement("div");
 yesButton.id = "yesButton";
 yesButton.innerHTML = "YES";
 yesButton.addEventListener("click", clearCanvas);
 areYouSure.appendChild(yesButton);
 
+//Making No Button
+var noButton = document.createElement("div");
+noButton.id = "noButton";
+noButton.innerHTML = "NO";
+noButton.addEventListener("click", closeMenu);
+areYouSure.appendChild(noButton);
+
+//Clear Canvas Function (YES)
 function clearCanvas() {
     enable();
     for (var i=0; i<canvasSquare.length; i++) {
@@ -306,12 +216,7 @@ function clearCanvas() {
     click.play();
 }
 
-var noButton = document.createElement("div");
-noButton.id = "noButton";
-noButton.innerHTML = "NO";
-noButton.addEventListener("click", closeMenu);
-areYouSure.appendChild(noButton);
-
+//Close Menu Function (NO)
 function closeMenu() {
     enable();
     areYouSure.style.display = "none";
@@ -322,22 +227,26 @@ function closeMenu() {
 //Creating Save/Load Options
 /////////////////////
 
+//Making Save/Load Div
 var saveLoadDiv = document.createElement("div");
 saveLoadDiv.id = "saveLoadDiv";
 options.appendChild(saveLoadDiv);
 
+//Making Save Button
 var saveButton = document.createElement("div");
 saveButton.id = "saveButton";
 saveButton.innerHTML = "SAVE";
 saveButton.addEventListener("click", savePic);
 saveLoadDiv.appendChild(saveButton);
 
+//Making Load Button
 var loadButton = document.createElement("div");
 loadButton.id = "loadButton"; 
 loadButton.innerHTML = "LOAD";
 loadButton.addEventListener("click", loadPic);
 saveLoadDiv.appendChild(loadButton);
 
+//Save Pic Function
 var saveArr;
 function savePic() {
     saveArr = [];
@@ -362,6 +271,7 @@ function savePic() {
     click.play();
 }
 
+//Load Pic Function
 function loadPic() {
     if ((saveArr)) {
         for (var i=0; i<canvasSquare.length; i++) {
@@ -399,22 +309,26 @@ function loadPic() {
 //Creating Undo/Redo Options
 /////////////////////
 
+//Making Undo/Redo Div
 var actionDiv = document.createElement("div");
 actionDiv.id = "actionDiv";
 options.appendChild(actionDiv);
 
+//Making Undo Button
 var undoButton = document.createElement("div");
 undoButton.id = "undoButton";
 undoButton.innerHTML = "UNDO";
 undoButton.addEventListener("click", undo);
 actionDiv.appendChild(undoButton);
 
+//Making Redo Button
 var redoButton = document.createElement("div");
 redoButton.id = "redoButton";
 redoButton.innerHTML = "REDO";
 redoButton.addEventListener("click", redo);
 actionDiv.appendChild(redoButton);
 
+//Undo Function
 function undo() {
     historyIndex--;
     if (historyIndex < 0) {
@@ -443,6 +357,7 @@ function undo() {
     click.play();
 }
 
+//Redo Function
 function redo() {
     historyIndex++;
     if (historyIndex === historyArr.length) {
@@ -472,9 +387,131 @@ function redo() {
 }
 
 /////////////////////
+//Creating Pixel Canvas
+/////////////////////
+
+//Making Canvas Div
+var canvasDiv = document.createElement("div");
+canvasDiv.id = "canvasDiv";
+pixelPainter.appendChild(canvasDiv);
+
+for (var i=0; i<20; i++) {
+    var makeCanvasRow = document.createElement("div");
+    makeCanvasRow.className = "canvasRow";
+    canvasDiv.appendChild(makeCanvasRow);
+}
+
+var canvasRow = document.getElementsByClassName("canvasRow");
+
+for (var i=0; i<canvasRow.length; i++) {
+    for (var j=0; j<20; j++) {
+        var makeCanvasSquare = document.createElement("div");
+        makeCanvasSquare.className = "canvasSquare";
+        makeCanvasSquare.addEventListener("mousedown", paint);
+        makeCanvasSquare.addEventListener("mouseover", dragPaint);
+        makeCanvasSquare.addEventListener("mouseup", stopPaint);
+        canvasRow[i].appendChild(makeCanvasSquare);
+    }
+}
+
+var canvasSquare = document.getElementsByClassName("canvasSquare");
+
+/////////////////////
+//Creating History Elements
+/////////////////////
+
+//Making History Elements
+var historyArr = [];
+var historyIndex = 0;
+var changes = [];
+var pixelDetail = [];
+for (var i=0; i<canvasSquare.length; i++) {
+    changes.push(canvasSquare[i].style.backgroundColor);
+}
+historyArr.push(changes);
+changes = [];
+console.log(historyArr);
+
+/////////////////////
+//Painting Functions
+/////////////////////
+
+var isClicked;
+
+//Mousedown Function
+function paint() {
+    if (historyArr.length-1 > historyIndex) {
+        historyArr.splice(historyIndex+1, historyArr.length-historyIndex-1);
+    }
+
+    if (eraseStatus === false) {
+        if (currentColor) {
+            this.style.backgroundColor = currentColor;
+            this.style.backgroundImage = null;
+        } else if (currentImage) {
+            this.style.backgroundImage = currentImage;
+            this.style.backgroundSize = "30px";
+            this.style.backgroundColor = null;
+        }
+    } else {
+        this.style.backgroundColor = null;
+        this.style.backgroundImage = null;
+    } 
+    isClicked = true;
+    click.play();
+}
+
+//Mouseover Function
+function dragPaint() {
+    if (isClicked) {
+        if (eraseStatus === false) {
+            if (currentColor) {
+                this.style.backgroundColor = currentColor;
+                this.style.backgroundImage = null;
+            } else if (currentImage) {
+                this.style.backgroundImage = currentImage;
+                this.style.backgroundSize = "30px";
+                this.style.backgroundColor = null;
+            }
+        } else {
+            this.style.backgroundColor = null;
+            this.style.backgroundImage = null;
+        } 
+    }
+}
+
+//Mouseup Function
+function stopPaint() {
+    for (var i=0; i<canvasSquare.length; i++) {
+        if (canvasSquare[i].style.backgroundColor) {
+            pixelDetail[0] = true;
+            pixelDetail[1] = canvasSquare[i].style.backgroundColor;
+            changes.push(pixelDetail);
+            pixelDetail = [];
+        } else if (canvasSquare[i].style.backgroundImage) {
+            pixelDetail[0] = false;
+            pixelDetail[1] = canvasSquare[i].style.backgroundImage;
+            changes.push(pixelDetail);
+            pixelDetail = [];
+        } else {
+            changes.push([]);
+        }
+    }
+    historyIndex++;
+    historyArr.push(changes);
+    changes = [];
+    console.log(historyArr);
+    console.log(historyIndex);
+    isClicked = false;
+    captionDiv.innerHTML = "";
+    playVid();
+}
+
+/////////////////////
 //Creating Captions Div to Display Comments
 /////////////////////
 
+//Making Caption Div
 var captionDiv = document.createElement("div");
 captionDiv.id = "captionDiv";
 captionDiv.innerHTML = "";
@@ -484,25 +521,29 @@ document.body.appendChild(captionDiv)
 //Creating Video Div that will pop up
 /////////////////////
 
+//Making Video Div
 var videoDiv = document.createElement("div");
 videoDiv.id = "videoDiv";
 videoDiv.style.display = "none";
 document.body.appendChild(videoDiv);
 
+//Making Close Options on Top of Video Div
 var closeVideoOptions = document.createElement("div");
 closeVideoOptions.id = "closeVideoOptions";
 videoDiv.appendChild(closeVideoOptions);
 
+//Making Close Button for Video Div
 var closeVideoDiv = document.createElement("div");
 closeVideoDiv.id = "closeVideoDiv";
 closeVideoDiv.addEventListener("click", closeVideo);
 closeVideoOptions.appendChild(closeVideoDiv);
 
+//Making Close Text for Video Div
 var closeText = document.createElement("div");
 closeText.id = "closeText";
 closeVideoOptions.appendChild(closeText);
 
-
+//Close Video Function
 function closeVideo() {
     for (var i=0; i<videos.length; i++) {
         if (videos[i].style.display === "block") {
@@ -520,6 +561,7 @@ function closeVideo() {
     closeVideoDiv.style.backgroundColor = null;
 }
 
+//Making Video Elements in Document
 var videoArr = ["assets/avocadoVid.mp4", "assets/catVid.mp4", "assets/coverVid.mp4", "assets/dogVid.mp4", "assets/peeleVid.mp4", "assets/penguinVid.mp4", "assets/shiaVid.mp4", "assets/spaceVid.mp4"];
 
 for (var i=0; i<videoArr.length; i++) {
@@ -538,22 +580,14 @@ var videos = document.getElementsByClassName("videos");
 
 var countDownNum;
 var timer;
-// var countDown = setInterval(function() {
-//     closeText.innerHTML = "YOU CAN CLOSE THIS VIDEO IN " + countDownNum + " SECS";
-//     countDownNum--;
-//     if (countDownNum === -1) {
-//         clearInterval(countDown);
-//         closeText.innerHTML = "";
-//         closeVideoDiv.style.backgroundColor = "rgba(150,150,150,0.9)";
-//         closeVideoDiv.innerHTML = "X";
-//     }
-// }, 1000);
 
+//Initiate Countdown Function
 function countDown() {
     timer = setInterval(setCloseText, 1000);
     closeVideoDiv.removeEventListener("click", closeVideo);
 }
 
+//Stop Countdown Function
 function stopTimer() {
     closeVideoDiv.style.backgroundColor = "rgba(150,150,150,0.9)";
     closeVideoDiv.innerHTML = "X";
@@ -562,6 +596,7 @@ function stopTimer() {
     interval = false;
 }
 
+//Change Close Text Function
 function setCloseText() {
     closeText.innerHTML = "YOU CAN CLOSE THIS VIDEO IN " + countDownNum + " SECS";
     countDownNum--;
@@ -571,11 +606,7 @@ function setCloseText() {
     }
 }
 
-
-
-
-
-
+//Play Select Video Function
 function playVid() {
     //AVOCADO
     if (canvasSquare[0].style.backgroundImage === 'url("assets/avocadoGif.gif")' && canvasSquare[19].style.backgroundImage === 'url("assets/avocadoGif.gif")' && canvasSquare[380].style.backgroundImage === 'url("assets/avocadoGif.gif")' && canvasSquare[399].style.backgroundImage === 'url("assets/avocadoGif.gif")') {
@@ -687,6 +718,7 @@ function playVid() {
     }
 };
 
+//Disable All Other Functions Function
 function disable() {
     for (var i=0; i<colorSquare.length; i++) {
         colorSquare[i].removeEventListener("click", selectColor);
@@ -704,6 +736,7 @@ function disable() {
     redoButton.removeEventListener("click", redo);
 }
 
+//Enable All Other Functions Function
 function enable() {
     for (var i=0; i<colorSquare.length; i++) {
         colorSquare[i].addEventListener("click", selectColor);
