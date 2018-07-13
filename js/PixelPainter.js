@@ -1,5 +1,5 @@
 /////////////////////
-//Audio Element
+//Audio Elements
 /////////////////////
 
 var audio = document.createElement("audio");
@@ -13,6 +13,11 @@ window.onload = function() {
     audio.play();
 }
 
+var click = document.createElement("audio");
+click.id = "click";
+click.src = "assets/clickSound.wav";
+click.preload = "auto";
+
 /////////////////////
 //Animated Title
 /////////////////////
@@ -21,11 +26,23 @@ var titleDiv = document.createElement("div");
 titleDiv.id = "titleDiv";
 document.body.appendChild(titleDiv);
 
-// for (var i=0; i<13; i++) {
-//     var makeCharDiv = document.createElement("div");
-//     makeCharDiv.className = "charDiv";
-//     titleDiv.appendChild(makeCharDiv);
-// }
+var titleText = "PIXEL-PAINTER";
+for (var i=0; i<titleText.length; i++) {
+    var splitTitle = titleText.split("");
+    var makeCharDivs = document.createElement("div");
+    makeCharDivs.className = "charDivs";
+    makeCharDivs.innerHTML = splitTitle[i];
+    titleDiv.appendChild(makeCharDivs);
+}
+
+var charDivs = document.getElementsByClassName("charDivs");
+
+var titleSpacing = 50;
+for (var i=0; i<charDivs.length; i++) {
+    charDivs[i].style.left = titleSpacing;
+    titleSpacing += 50;
+}
+
 
 /////////////////////
 //Creating Pixel Painter Area
@@ -96,6 +113,7 @@ function selectColor() {
     }
     this.style.border = "2px solid yellow";
     eraseStatus = false;
+    click.play();
 }
 
 var imgArr = ["url(assets/avocadoGif.gif)", "url(assets/catGif.gif)", "url(assets/coverGif.gif)", "url(assets/dogGif.gif)", "url(assets/peeleGif.gif)", "url(assets/penguinGif.gif)", "url(assets/shiaGif.gif)", "url(assets/spaceGif.gif)"];
@@ -131,6 +149,7 @@ clearButton.addEventListener("click", areYouSure);
 eraseColorDiv.appendChild(clearButton);
 
 function areYouSure() {
+    click.play();
     disable();
     areYouSure.style.display = "block";
 }
@@ -204,6 +223,7 @@ function paint() {
         this.style.backgroundImage = null;
     } 
     isClicked = true;
+    click.play();
 }
 
 function dragPaint() {
@@ -284,6 +304,7 @@ function clearCanvas() {
     historyArr.push(changes);
     changes = [];
     captionDiv.innerHTML = "CANVAS CLEARED";
+    click.play();
 }
 
 var noButton = document.createElement("div");
@@ -295,6 +316,7 @@ areYouSure.appendChild(noButton);
 function closeMenu() {
     enable();
     areYouSure.style.display = "none";
+    click.play();
 }
 
 /////////////////////
@@ -338,6 +360,7 @@ function savePic() {
     console.log(saveArr);
     console.log("Pic Saved!");
     captionDiv.innerHTML = "PIC SAVED!";
+    click.play();
 }
 
 function loadPic() {
@@ -370,6 +393,7 @@ function loadPic() {
     }
     historyArr.push(changes);
     changes = [];
+    click.play();
 }
 
 /////////////////////
@@ -417,6 +441,7 @@ function undo() {
         console.log(historyArr);
         console.log(historyIndex);
     }
+    click.play();
 }
 
 function redo() {
@@ -444,6 +469,7 @@ function redo() {
         console.log(historyArr);
         console.log(historyIndex);
     }   
+    click.play();
 }
 
 /////////////////////
@@ -486,6 +512,7 @@ function closeVideo() {
     audio.play();
     enable();
     document.body.style.backgroundImage = 'url("assets/spaceBackground.png")';
+    click.play();
 }
 
 var videoArr = ["assets/avocadoVid.mp4", "assets/catVid.mp4", "assets/coverVid.mp4", "assets/dogVid.mp4", "assets/peeleVid.mp4", "assets/penguinVid.mp4", "assets/shiaVid.mp4", "assets/spaceVid.mp4"];

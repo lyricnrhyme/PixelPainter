@@ -4,20 +4,45 @@ body {
     background-size: cover;
 }
 
-/* h1 {
-    text-align: center;
-    color: white;
-    font-size: 48px;
-    margin: auto;
-    padding-bottom: 10px;
-} */
-
 #titleDiv {
-    width: 775px;
+    width: 596px;
     height: 100px;
-    background-color: red;
+    /* background-color: red; */
+    position: absolute;
+    display: flex;
+    margin: auto;
+    padding-left: 180px;
+}
+
+.charDivs {
+    width: 80px;
+    height: 100px;
+    /* background-color: green; */
+    color: white;
+    font-size: 100px;
     position: absolute;
 }
+
+.charDivs:nth-child(odd) {
+    animation: upDown 3s infinite;
+}
+
+.charDivs:nth-child(even) {
+    animation: downUp 3s infinite;
+}
+
+@keyframes upDown {
+    0% {top: 0px}
+    50% {top: 20px}
+    100% {top: 0px}
+}
+
+@keyframes downUp {
+    0% {top: 20px}
+    50% {top: 0px}
+    100% {top: 20px}
+}
+
 
 #areYouSure {
     width: 300px;
