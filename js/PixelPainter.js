@@ -43,7 +43,6 @@ for (var i=0; i<charDivs.length; i++) {
     titleSpacing += 50;
 }
 
-
 /////////////////////
 //Creating Pixel Painter Area
 /////////////////////
@@ -496,9 +495,13 @@ videoDiv.appendChild(closeVideoOptions);
 
 var closeVideoDiv = document.createElement("div");
 closeVideoDiv.id = "closeVideoDiv";
-closeVideoDiv.innerHTML = "X";
 closeVideoDiv.addEventListener("click", closeVideo);
 closeVideoOptions.appendChild(closeVideoDiv);
+
+var closeText = document.createElement("div");
+closeText.id = "closeText";
+closeVideoOptions.appendChild(closeText);
+
 
 function closeVideo() {
     for (var i=0; i<videos.length; i++) {
@@ -513,6 +516,8 @@ function closeVideo() {
     enable();
     document.body.style.backgroundImage = 'url("assets/spaceBackground.png")';
     click.play();
+    closeVideoDiv.innerHTML = "";
+    closeVideoDiv.style.backgroundColor = null;
 }
 
 var videoArr = ["assets/avocadoVid.mp4", "assets/catVid.mp4", "assets/coverVid.mp4", "assets/dogVid.mp4", "assets/peeleVid.mp4", "assets/penguinVid.mp4", "assets/shiaVid.mp4", "assets/spaceVid.mp4"];
@@ -531,6 +536,46 @@ var videos = document.getElementsByClassName("videos");
 //Making Videos Visible Function
 /////////////////////
 
+var countDownNum;
+var timer;
+// var countDown = setInterval(function() {
+//     closeText.innerHTML = "YOU CAN CLOSE THIS VIDEO IN " + countDownNum + " SECS";
+//     countDownNum--;
+//     if (countDownNum === -1) {
+//         clearInterval(countDown);
+//         closeText.innerHTML = "";
+//         closeVideoDiv.style.backgroundColor = "rgba(150,150,150,0.9)";
+//         closeVideoDiv.innerHTML = "X";
+//     }
+// }, 1000);
+
+function countDown() {
+    timer = setInterval(setCloseText, 1000);
+    closeVideoDiv.removeEventListener("click", closeVideo);
+}
+
+function stopTimer() {
+    closeVideoDiv.style.backgroundColor = "rgba(150,150,150,0.9)";
+    closeVideoDiv.innerHTML = "X";
+    closeVideoDiv.addEventListener("click", closeVideo);
+    clearInterval(timer);
+    interval = false;
+}
+
+function setCloseText() {
+    closeText.innerHTML = "YOU CAN CLOSE THIS VIDEO IN " + countDownNum + " SECS";
+    countDownNum--;
+    if (countDownNum === -2) {
+        closeText.innerHTML = "";
+        stopTimer(); 
+    }
+}
+
+
+
+
+
+
 function playVid() {
     //AVOCADO
     if (canvasSquare[0].style.backgroundImage === 'url("assets/avocadoGif.gif")' && canvasSquare[19].style.backgroundImage === 'url("assets/avocadoGif.gif")' && canvasSquare[380].style.backgroundImage === 'url("assets/avocadoGif.gif")' && canvasSquare[399].style.backgroundImage === 'url("assets/avocadoGif.gif")') {
@@ -540,6 +585,8 @@ function playVid() {
         videos[0].play();
         audio.pause();
         disable();
+        countDownNum = 5;
+        countDown();
         // console.log("Avocado");
         // return "Avocado";
 
@@ -551,6 +598,8 @@ function playVid() {
         videos[1].play();
         audio.pause();
         disable();
+        countDownNum = 5;
+        countDown();
         // console.log("Cat");
         // return "Cat";
 
@@ -562,6 +611,8 @@ function playVid() {
         videos[2].play();
         audio.pause();
         disable();
+        countDownNum = 5;
+        countDown();
         // console.log("Cover");
         // return "Cover";
 
@@ -573,6 +624,8 @@ function playVid() {
         videos[3].play();
         audio.pause();
         disable();
+        countDownNum = 5;
+        countDown();
         // console.log("Dog");
         // return "Dog";
 
@@ -584,6 +637,8 @@ function playVid() {
         videos[4].play();
         audio.pause();
         disable();
+        countDownNum = 5;
+        countDown();
         // console.log("Peele");
         // return "Peele";
 
@@ -595,6 +650,8 @@ function playVid() {
         videos[5].play();
         audio.pause();
         disable();
+        countDownNum = 5;
+        countDown();
         // console.log("Penguin");
         // return "Penguin";
 
@@ -607,6 +664,8 @@ function playVid() {
         videos[6].play();
         audio.pause();
         disable();
+        countDownNum = 5;
+        countDown();
         // console.log("Shia");
         // return "Shia";
 
@@ -618,6 +677,8 @@ function playVid() {
         videos[7].play();
         audio.pause();
         disable();
+        countDownNum = 5;
+        countDown();
         // console.log("Space");
         // return "Space";
 
