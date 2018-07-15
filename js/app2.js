@@ -1,5 +1,7 @@
 const myFunc = (function() {
-
+    var currentColor = colorSquare[0].style.backgroundColor;
+    var currentImage;
+    var eraseStatus = false;
     function selectColor() {
         if (this.style.backgroundImage) {
             currentColor = null;
@@ -389,4 +391,4 @@ const myFunc = (function() {
         disable: disable,
         enable: enable
     }
-})
+})();

@@ -170,6 +170,127 @@ function areYouSure() {
 }
 
 /////////////////////
+//Creating Pixel Canvas
+/////////////////////
+
+//Making Canvas Div
+var canvasDiv = document.createElement("div");
+canvasDiv.id = "canvasDiv";
+pixelPainter.appendChild(canvasDiv);
+
+for (var i=0; i<20; i++) {
+    var makeCanvasRow = document.createElement("div");
+    makeCanvasRow.className = "canvasRow";
+    canvasDiv.appendChild(makeCanvasRow);
+}
+
+var canvasRow = document.getElementsByClassName("canvasRow");
+
+for (var i=0; i<canvasRow.length; i++) {
+    for (var j=0; j<20; j++) {
+        var makeCanvasSquare = document.createElement("div");
+        makeCanvasSquare.className = "canvasSquare";
+        makeCanvasSquare.addEventListener("mousedown", paint);
+        makeCanvasSquare.addEventListener("mouseover", dragPaint);
+        makeCanvasSquare.addEventListener("mouseup", stopPaint);
+        canvasRow[i].appendChild(makeCanvasSquare);
+    }
+}
+
+var canvasSquare = document.getElementsByClassName("canvasSquare");
+
+/////////////////////
+//Creating History Elements
+/////////////////////
+
+//Making History Elements
+var historyArr = [];
+var historyIndex = 0;
+var changes = [];
+var pixelDetail = [];
+for (var i=0; i<canvasSquare.length; i++) {
+    changes.push(canvasSquare[i].style.backgroundColor);
+}
+historyArr.push(changes);
+changes = [];
+console.log(historyArr);
+
+/////////////////////
+//Painting Functions
+/////////////////////
+
+var isClicked;
+
+//Mousedown Function
+function paint() {
+    if (historyArr.length-1 > historyIndex) {
+        historyArr.splice(historyIndex+1, historyArr.length-historyIndex-1);
+    }
+
+    if (eraseStatus === false) {
+        if (currentColor) {
+            this.style.backgroundColor = currentColor;
+            this.style.backgroundImage = null;
+        } else if (currentImage) {
+            this.style.backgroundImage = currentImage;
+            this.style.backgroundSize = "30px";
+            this.style.backgroundColor = null;
+        }
+    } else {
+        this.style.backgroundColor = null;
+        this.style.backgroundImage = null;
+    } 
+    isClicked = true;
+    click.play();
+}
+
+//Mouseover Function
+function dragPaint() {
+    if (isClicked) {
+        if (eraseStatus === false) {
+            if (currentColor) {
+                this.style.backgroundColor = currentColor;
+                this.style.backgroundImage = null;
+            } else if (currentImage) {
+                this.style.backgroundImage = currentImage;
+                this.style.backgroundSize = "30px";
+                this.style.backgroundColor = null;
+            }
+        } else {
+            this.style.backgroundColor = null;
+            this.style.backgroundImage = null;
+        } 
+    }
+}
+
+//Mouseup Function
+function stopPaint() {
+    for (var i=0; i<canvasSquare.length; i++) {
+        if (canvasSquare[i].style.backgroundColor) {
+            pixelDetail[0] = true;
+            pixelDetail[1] = canvasSquare[i].style.backgroundColor;
+            changes.push(pixelDetail);
+            pixelDetail = [];
+        } else if (canvasSquare[i].style.backgroundImage) {
+            pixelDetail[0] = false;
+            pixelDetail[1] = canvasSquare[i].style.backgroundImage;
+            changes.push(pixelDetail);
+            pixelDetail = [];
+        } else {
+            changes.push([]);
+        }
+    }
+    historyIndex++;
+    historyArr.push(changes);
+    changes = [];
+    console.log(historyArr);
+    console.log(historyIndex);
+    isClicked = false;
+    captionDiv.innerHTML = "";
+    playVid();
+}
+
+/////////////////////
 //Creating Clear Canvas Options
 /////////////////////
 
@@ -387,127 +508,6 @@ function redo() {
 }
 
 /////////////////////
-//Creating Pixel Canvas
-/////////////////////
-
-//Making Canvas Div
-var canvasDiv = document.createElement("div");
-canvasDiv.id = "canvasDiv";
-pixelPainter.appendChild(canvasDiv);
-
-for (var i=0; i<20; i++) {
-    var makeCanvasRow = document.createElement("div");
-    makeCanvasRow.className = "canvasRow";
-    canvasDiv.appendChild(makeCanvasRow);
-}
-
-var canvasRow = document.getElementsByClassName("canvasRow");
-
-for (var i=0; i<canvasRow.length; i++) {
-    for (var j=0; j<20; j++) {
-        var makeCanvasSquare = document.createElement("div");
-        makeCanvasSquare.className = "canvasSquare";
-        makeCanvasSquare.addEventListener("mousedown", paint);
-        makeCanvasSquare.addEventListener("mouseover", dragPaint);
-        makeCanvasSquare.addEventListener("mouseup", stopPaint);
-        canvasRow[i].appendChild(makeCanvasSquare);
-    }
-}
-
-var canvasSquare = document.getElementsByClassName("canvasSquare");
-
-/////////////////////
-//Creating History Elements
-/////////////////////
-
-//Making History Elements
-var historyArr = [];
-var historyIndex = 0;
-var changes = [];
-var pixelDetail = [];
-for (var i=0; i<canvasSquare.length; i++) {
-    changes.push(canvasSquare[i].style.backgroundColor);
-}
-historyArr.push(changes);
-changes = [];
-console.log(historyArr);
-
-/////////////////////
-//Painting Functions
-/////////////////////
-
-var isClicked;
-
-//Mousedown Function
-function paint() {
-    if (historyArr.length-1 > historyIndex) {
-        historyArr.splice(historyIndex+1, historyArr.length-historyIndex-1);
-    }
-
-    if (eraseStatus === false) {
-        if (currentColor) {
-            this.style.backgroundColor = currentColor;
-            this.style.backgroundImage = null;
-        } else if (currentImage) {
-            this.style.backgroundImage = currentImage;
-            this.style.backgroundSize = "30px";
-            this.style.backgroundColor = null;
-        }
-    } else {
-        this.style.backgroundColor = null;
-        this.style.backgroundImage = null;
-    } 
-    isClicked = true;
-    click.play();
-}
-
-//Mouseover Function
-function dragPaint() {
-    if (isClicked) {
-        if (eraseStatus === false) {
-            if (currentColor) {
-                this.style.backgroundColor = currentColor;
-                this.style.backgroundImage = null;
-            } else if (currentImage) {
-                this.style.backgroundImage = currentImage;
-                this.style.backgroundSize = "30px";
-                this.style.backgroundColor = null;
-            }
-        } else {
-            this.style.backgroundColor = null;
-            this.style.backgroundImage = null;
-        } 
-    }
-}
-
-//Mouseup Function
-function stopPaint() {
-    for (var i=0; i<canvasSquare.length; i++) {
-        if (canvasSquare[i].style.backgroundColor) {
-            pixelDetail[0] = true;
-            pixelDetail[1] = canvasSquare[i].style.backgroundColor;
-            changes.push(pixelDetail);
-            pixelDetail = [];
-        } else if (canvasSquare[i].style.backgroundImage) {
-            pixelDetail[0] = false;
-            pixelDetail[1] = canvasSquare[i].style.backgroundImage;
-            changes.push(pixelDetail);
-            pixelDetail = [];
-        } else {
-            changes.push([]);
-        }
-    }
-    historyIndex++;
-    historyArr.push(changes);
-    changes = [];
-    console.log(historyArr);
-    console.log(historyIndex);
-    isClicked = false;
-    captionDiv.innerHTML = "";
-    playVid();
-}
-
-/////////////////////
 //Creating Captions Div to Display Comments
 /////////////////////
 
@@ -593,7 +593,6 @@ function stopTimer() {
     closeVideoDiv.innerHTML = "X";
     closeVideoDiv.addEventListener("click", closeVideo);
     clearInterval(timer);
-    interval = false;
 }
 
 //Change Close Text Function
